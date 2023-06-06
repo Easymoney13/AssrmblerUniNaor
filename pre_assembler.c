@@ -33,11 +33,7 @@ void preAssembler(char* file_name)
                 printf("File didn't open: %s\n",file_name);
                 exit(-1);
             }/*if*/
-            /*printf("before make am\n");
-            printf("%s\n",name_am);
-            printf("%s\n",name_as);*/
             make_am_file(fpas,fpam,head);
-            /*printf("after\n");*/
         /*for*/
     /*else*/
 }
@@ -56,28 +52,20 @@ FILE *make_am_file(FILE *og_file, FILE *new_file, macro_node *node){
         curr_node=node;
         fgets(line,maxLineLen,og_file);
         strcpy(line_cpy,line);
-/*        printf("the full line: %s\n",line);*/
         token = strtok(line_cpy, s);
         /*puts(token);*/
         while(strcmp(token,s) == 0){
             /*find first word if there is space before*/
-            /*printf("inside the while\n");*/
             token = strtok(NULL,s);
         }/*skip space while*/
-        /*printf("%s",token);*/
-        /*printf("after while(first word)\n");*/
         strcpy(tmp_line,line);/*preparing second word on the list for macro name*/
         if(tmp_line[strlen(tmp_line)-1] != '\n'){
             strcat(tmp_line,"\n");
         }
-        /*printf("\n%p\n",(void*)is_macro(node,tmp_line));*/
-        /* check if word is name of macro*/
         if((is_macro(node,tmp_line))){
-            /*printf("inside is macro(if)\n");*/
             fprintf(new_file,(is_macro(node,tmp_line)->all_macro_data));/*print macro data*/
             continue;
         }/*if*/
-        /*printf("after is_macro if()\n");*/
         if(strcmp(token,"macro") == 0){/*check if declaration of macro*/
             strcpy(new_node->all_macro_data,"");
             new_node->macro_name = (char*)malloc(sizeof(char)*max_word_len);
@@ -110,20 +98,11 @@ macro_node* is_macro(macro_node* head, char* str){/*checks if str is existing ma
     char *new_str = (char*)malloc(strlen(str)+2);
     macro_node* curr = (macro_node*)malloc(sizeof(macro_node));
     curr = head;
-    /*printf("%s(is_macro)\n",str);
-    printf("after malloc\n");*/
     strcpy(new_str,str);
-    /*puts("after strcpy");*/
     for(;curr != NULL; curr = curr->next){
-        /*printf("in for loop\n");
-        printf("name: %s\n",curr->macro_name);
-        printf("content: %s\n",curr->all_macro_data);
-        printf("after this shit\n");*/
         if(strcmp(new_str,curr->macro_name) == 0){
-            /*printf("found name");*/
             return curr;
         }
     }
-    /*puts("after for");*/
     return NULL;
 }
