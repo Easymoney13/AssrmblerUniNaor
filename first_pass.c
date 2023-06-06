@@ -15,11 +15,8 @@ void remove_two_dots(char* str){
     line* curr_line = l1;
 
     while((curr_line = curr_line ->next) != NULL){
-        /*printf("first word in line :%s\n",curr_line->separate[0]);
-        printf("in while\n");*/
         if(curr_line->is_extern == true){/*chekc if the current line is extern*/
             label* new_label = (label*)malloc(sizeof(label));
-            /*puts("line is_extern(first pass while)\n");*/
             curr_label->next = new_label;
             strcpy(new_label->name,(curr_line->separate)[1]);/*assign the new label name from the seperate table*/
             new_label->add = 0;/*assign label address to 0*/
@@ -29,7 +26,6 @@ void remove_two_dots(char* str){
         if(curr_line->has_label){
             label* new_label = (label*)malloc(sizeof(label));
             if(curr_line->is_entry || curr_line->is_extern){/*if delered label in .entry/.extern line*/
-                /*printf("line %d: invalid label declration\n",curr_line->line_number);*/
                 curr_line->have_problem = true;
                 continue;
             }
@@ -38,12 +34,9 @@ void remove_two_dots(char* str){
                 curr_line->have_problem = true;
                 continue;
             }
-            /*printf("line have label\n");*/
             curr_label -> next = new_label;
-  /*          printf("before strcpy\n");*/
             remove_two_dots((curr_line->separate)[0]);/*remove the ':' from the label name*/
             strcpy(new_label -> name,(curr_line->separate)[0]);/*assign the label name to the label table*/
-      /*      printf("after strcpy string: %s\n",new_label->name);*/
             new_label -> add = curr_line->address;/*assign its address*/
             if(curr_line->is_data == true)
                 new_label->lm = label_data;
@@ -51,9 +44,7 @@ void remove_two_dots(char* str){
                 new_label->lm = label_string;
             else if(curr_line->is_struct == true)
                 new_label->lm = true;
-            /*printf("before connect curr is: %s\n",curr_label->name);*/
             curr_label = new_label;
-            /*printf("after connect new label name :%s ,add: %d\n",curr_label->name,curr_label->add);*/
             curr_label ->next = NULL;
         }
     }/*while*/  
@@ -62,7 +53,6 @@ void printLabels(label* head_label){
     label* curr_label = (label*)malloc(sizeof(label));
     curr_label = head_label;
     while(curr_label != NULL){
-        /*printf("%s , %d\n",curr_label->name,curr_label->add);*/
         curr_label = curr_label->next;
     }
 }
