@@ -4,7 +4,6 @@ void ent_file_creator(ent_list* first_ent,char *name){
     FILE* ent_new_file;
     ent_list* curr_ent_list = (ent_list*)malloc(2*sizeof(ent_list));
     curr_ent_list = first_ent->next;
-    /*printf("after current lines\n");*/
     if(curr_ent_list == NULL){/*there is no .entry so don't create this file*/
         printf("don't create .ent file\n");
         return;
@@ -12,7 +11,6 @@ void ent_file_creator(ent_list* first_ent,char *name){
     ent_new_file = fopen(name,"w");/*open new file for .entry*/
     while(curr_ent_list!= NULL){/*going thourgh all ent linked list*/
         fprintf(ent_new_file,"%s\t",curr_ent_list->name);/*print to the .enr file the current name*/
-        /*printf("%d\n",curr_ent_list->add);*/
         dec_to_thirtyTwo(curr_ent_list->add,ent_new_file);/*print to the .enr file the current address*/
         fprintf(ent_new_file,"\n");
         curr_ent_list = curr_ent_list->next;
@@ -32,13 +30,9 @@ void ext_file_creator(ext_list* first_ext,char* name){
         ext_new_file = fopen(name,"w");/*open new file for externs*/
         while(curr_ext_list != NULL){
             size = sizeof(curr_ext_list->found_places)/4;/*how many times this extern label have found*/
-            /*printf("%d\n",size);*/
             for(i=0;i<size;i++){/*loop that go through the places that found*/
                 if((curr_ext_list->found_places)[i] != 0){/*check that is't a valid address*/
-                /*printf("%s\n",curr_ext_list->name);
-                printf("%d\n",(curr_ext_list->found_places)[i]);*/
                 fprintf(ext_new_file,"%s\t",curr_ext_list->name);/*print to .ext file the extern name*/
-                /*printf("between\n");*/
                 dec_to_thirtyTwo((curr_ext_list->found_places)[i],ext_new_file);/*print it's found places*/
                 fprintf(ext_new_file,"\n");
                 }
@@ -84,31 +78,23 @@ void ob_file_creator(field_analyze* head_field,char* name){
     dec_to_thirtyTwo(IC_NUMBER,ob_new_file);/*print to .ob file the IC*/
     dec_to_thirtyTwo(DC_NUMBER,ob_new_file);/*print to .ob file the DC*/
     fprintf(ob_new_file,"\n");
-    /*printf("%d\t%d\n",IC_NUMBER,DC_NUMBER);*/
     while(curr_field != NULL){
         if(curr_field->flag != valuef){
             dec_to_thirtyTwo(curr_field->address,ob_new_file);/*print to .ob the address(base 32)*/
             dec_to_thirtyTwo(fieldAnalyze_add_create(curr_field),ob_new_file);/*print to .ob the bitfield value (base 32)*/
             fprintf(ob_new_file,"\n");
        }else{
-           /* dec_to_thirtyTwo(curr_field->address,stdout);*/
-            /*printf("\n");*/
             dec_to_thirtyTwo(curr_field->address,data_image_file);/*print to data_image FILE the address(base 32)*/
             dec_to_thirtyTwo(fieldAnalyze_add_create(curr_field),data_image_file);/*print to data_image FILE the bitfield value (base 32)*/
             fprintf(data_image_file,"\n");
         }
         curr_field = curr_field->next;/*implement*/
     }
-    /*printf("before rewindn\n");*/
     fseek(data_image_file,0,SEEK_SET);/*set data_image_file to the start of the FILE*/
-    /*printf("after rewind\n");
-    printf("before fgets\n");*/
     to_read = fopen("DC.txt","r");/*open data_image_file for start reading from it*/
-    /*printf("before while\n");*/
     while( ( ch = fgetc(to_read) ) != EOF ){/*copying all the data from data_image_file to .ob file*/
        fprintf(ob_new_file,"%c",ch);
     }
-    /*printf("\naftet while\n");*/
 }
 int fieldAnalyze_add_create(field_analyze* f1){
     int bf;
@@ -137,9 +123,7 @@ bool does_file_have_problems(line* head_line){
     /*printf("in func(does_file_have_problems)\n");*/
     curr_line = head_line;
     while(curr_line!=NULL){
-        /*printf("line number: %d, have_prob: %d\n",curr_line->line_number,curr_line->have_problem);*/
         if(curr_line->have_problem == true){/*checks if curr_line "have_problem" flag is on*/
-            /*printf("in if(does_file_have_problems)\n");*/
             return true;
         }
         curr_line = curr_line->next;/*implemntation*/
