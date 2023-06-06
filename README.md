@@ -50,3 +50,15 @@ There are 4 kinds of sentences the assembler knows:
 4. Command Sentence - Creates an action for the machine to execute upon running the program.
 
 Line maximum length is 80. 
+
+#### Instruction Sentence
+
+Instruction Sentence may or may not start with a label. Valid instructions are: 
+
+1. **.data** - declaration of integers. For example: `.data 12, 453, -6`.
+
+2. **.string** - declaration of a string contained within *" "*. For example: `.string "OH MY GOD!"`.
+
+3. **.extern** - reference to an external label, declared in another file. For example `.extern myLabel`.
+
+4. **.entry** - reference to an internal label, that already was or will be declared in the program. For example `.entry myLabel`.
