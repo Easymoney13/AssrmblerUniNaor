@@ -6,14 +6,26 @@ this is the final project of course 20465 - Systems Programming in C of the open
 
     - `assembler.c` - Main program.
    
-    - `pre_assembler.c` - check the code validation & make .am file (after macro file)
+    - `pre_assembler.c` - check the code validation & make .am file (after macro file).
 
     - `first_pass.c` - An implementation of first pass algorithm.
 
-    - `line_read.c` - parse each line and divide it to our field.
+    - `line_read.c` - Parse each line and divide it to our field.
 
     - `second_pass.c` - An implementation of second pass algorithm.
 
-    - `errors.c` - A thorough check of errors during first and second pass.
+    - `analyze_str.c` - Contain functions about strings.
     
-    - `output.c` - Creates *.ext*, *.ent* and *.ob* output files.
+    - `free_code.c` - Free all the allocated memory from the program.
+    
+    - `helper.c` - File that contain helper function for the program.
+    
+    - `store.h` - Contain all constants and usful data.
+    
+    - `FinalCreator.c`- Contain all the final files creation and look for problems.
+## Computer and Language Structure
+
+### Computer Structure
+Our imaginary computer consists of CPU, Registers and RAM (some of the RAM is utilized as stack).
+
+The CPU has 8 registers (r0-r7). each register size is 12 bits. lsb is 0 and msb is 11.
