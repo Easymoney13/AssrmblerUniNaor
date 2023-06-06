@@ -7,7 +7,6 @@ int howManyBf(line*);
 
 /*create new line and add it to the list*/
 line* add_line(char* str,line* curr,line* head){
-    /*int i;*/
     line* new_line = (line*)malloc(sizeof(line));
     static int line_num = 1;/*giving each line a line_number*/
     deff_values(new_line);
@@ -22,18 +21,11 @@ line* add_line(char* str,line* curr,line* head){
         values_initializer(new_line,str,curr->address + curr->bfNum);
         curr = new_line;
     }
-    /*printf("end\n");
-    for(i=0;i<curr->word_num;i++){
-        printf("%s\t",(curr->separate)[i]);
-    }*/
     new_line->bfNum = howManyBf(new_line);
     new_line->line_number = line_num;
     line_num++;
     return new_line;
 }
-/*initialize the line struct values
-  address , is_label , full_line , word_num , is_ingnore,
-*/
 void values_initializer(line* l1,char* str,int add){
     l1->address = add;
     strcpy((l1->full_line),str);/*copying all the line data to the data structure*/
@@ -45,7 +37,6 @@ void values_initializer(line* l1,char* str,int add){
 
 int count_words(line* l1){
     int rows = how_many_rows(l1->separate);
-    /*printf("rows = %d\n",rows);*/
     if(l1->has_label){
         rows--;
     }
@@ -54,7 +45,6 @@ int count_words(line* l1){
 void line_type(line* l1){
     int i;
     int opcode_times = 0;
-    /*printf("/////////////////////////1st line(line_type)/////////////////////////////\n");*/
     if(str_only_white_spaces(l1->full_line)){
         l1->is_empty =true;
         return;
@@ -65,47 +55,33 @@ void line_type(line* l1){
     }
     else
     {
-        /*printf("in the else one(line_type)\n");*/
         for(i=0;i<2;i++)
         {
             if(strcmp(l1->separate[i],".data") == 0){
-                /*printf("////////////////////////line is data/////////////////////////////\n");
-                printf("word: %s\n",l1->separate[i]);*/
                 l1->is_data = true;
                 l1->is_guidance = true;
             }
             else if(strcmp(l1->separate[i],".string") == 0){
-                /*printf("////////////////////////line is string/////////////////////////////\n");
-                printf("word: %s\n",l1->separate[i]);*/
                 l1->is_string = true;
                 l1->is_guidance = true;
             }
             else if(strcmp(l1->separate[i],".struct") == 0){
-                /*printf("////////////////////////line is struct/////////////////////////////\n");
-                printf("word: %s\n",l1->separate[i]);*/
                 l1->is_struct = true;
                 l1->is_guidance = true;
             }
             else if(strcmp(l1->separate[i],".entry") == 0){
-                /*printf("////////////////////////line is entry/////////////////////////////\n");
-                printf("word: %s\n",l1->separate[i]);*/
                 l1->is_entry = true;
                 l1->is_guidance = true;
             }
             else if(strcmp(l1->separate[i],".extern") == 0){
-                /*printf("////////////////////////line is extern/////////////////////////////\n");
-                printf("word: %s\n",l1->separate[i]);*/
                 l1->is_extern = true;
                 l1->is_guidance = true;
             }
 	        else if(strcmp(l1->separate[i],"mov")== 0||strcmp(l1->separate[i],"cmp")== 0||strcmp(l1->separate[i],"add")== 0||strcmp(l1->separate[i],"sub")== 0||strcmp(l1->separate[i],"not")== 0||strcmp(l1->separate[i],"clr")== 0||strcmp(l1->separate[i],"lea")== 0||strcmp(l1->separate[i],"inc")== 0||strcmp(l1->separate[i],"jmp")== 0||strcmp(l1->separate[i],"dec")== 0||strcmp(l1->separate[i],"bne")== 0||strcmp(l1->separate[i],"get")== 0||strcmp(l1->separate[i],"prn")== 0||strcmp(l1->separate[i],"rts")== 0||strcmp(l1->separate[i],"hlt")== 0){
-		        /*printf("////////////////////////line is instruct/////////////////////////////\n");*/
                 opcode_times++;
-                /*printf("word: %s\n",l1->separate[i]);*/
                 l1->is_instruct = true;
             }
         }/*for loop*/
-        /*printf("before the long long if\n");*/
         if((l1->is_guidance&&l1->is_instruct)||
         (l1->is_entry&&(l1->is_extern||l1->is_string||l1->is_data||l1->is_struct))||
         ((l1->is_string)&&(l1->is_extern||l1->is_struct||l1->is_data))||
@@ -114,19 +90,16 @@ void line_type(line* l1){
             printf("line %d :line types incompatible\n",l1->line_number);
             l1->have_problem = true;
         }
-        /*printf("after the long long if\n");*/
     }/*else*/
 }
 void seperate_array_creator(line* l1){
     char line_data[maxLineLen];
     int separate_times,j;/*how many times we check the "space"*/
     char s[2]=" ";/*s is space*/
-    /*char token[max_word_len] = "";*/
     char* token;
     strcpy(line_data,l1->full_line);
     token = strtok(line_data,s);
     while(strcmp(token,s) == 0){
-        /*This makes sure that even if the first word has spaces before, it will get to the first word*/
         token = strtok(NULL,s);
     }/*while*/
     if(last_str_char(token) == ':'){/*checks if words is label*/
@@ -207,12 +180,9 @@ int howManyBf(line* line1){
             }
         }
     }
-    /*printf("%s\n",(line1->separate)[first_opp_index+1]);*/
     if(str_only_white_spaces((line1->separate)[first_opp_index+1]) != true){
     strcpy(operand_copy,(line1->separate)[first_opp_index+1]);
-    /*printf("%s\n",operand_copy);*/
     token = strtok(operand_copy,".");
-    /*printf("%s\n",token);*/
     if(strcmp(token,(line1->separate)[first_opp_index+1]) != 0){/*this means operand is access struct*/
         token = strtok(NULL,".");
         if(strcmp(token,"1") == 0 || strcmp(token,"2") == 0)
@@ -266,8 +236,6 @@ int howManyBf(line* line1){
             printf("error\n");
         curr = first;
         do{
-            /*if(curr==NULL) printf("curr is null\n");
-            else printf("\nnot null\n");*/
             fgets(line_data,maxLineLen,fp);/*read the next line from the file*/
             curr = add_line(line_data,curr,first);/*send to add_line function that new line*/
         }while(!feof(fp));
